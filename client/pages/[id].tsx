@@ -1,8 +1,9 @@
 import React from 'react'
 import NavBar from '../components/NavBar'
+import * as IPFS from 'ipfs-core';
 
 const Page = () => {
-  return (
+	return (
 		<>
 			<NavBar />
 			<div className='flex m-5'>
@@ -21,7 +22,7 @@ const Page = () => {
 				</div>
 			</div>
 		</>
-  )
+	)
 }
 
 export default Page

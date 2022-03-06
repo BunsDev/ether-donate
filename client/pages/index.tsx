@@ -15,7 +15,7 @@ const Home: NextPage = () => {
           <p className='m-3'>A website for supporting others and letting others support you by using <span className='gradient-text'>ethereum.</span></p>
           <div className='m-3'>
             <Link href="/newPage">
-              <span className='py-3 px-5 gradient-button'>Create My Page!</span>
+              <span className='py-3 px-5 gradient-button hover:cursor-pointer'>Create My Page!</span>
             </Link>
           </div>
         </div>
