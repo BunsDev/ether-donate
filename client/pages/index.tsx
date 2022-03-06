@@ -11,7 +11,7 @@ const Home: NextPage = () => {
 			<div className='h-screen flex flex-col'>
 				<NavBar />
 				<div className='flex flex-col text-center h-full justify-center'>
-				<h1 className='text-shadow-xl font-extrabold text-8xl m-3'>ETHER DONATE</h1>
+				<h1 className='text-shadow-xl text-3xl font-extrabold md:text-8xl m-3'>ETHER DONATE</h1>
 				<p className='m-3'>A website for supporting others and letting others support you by using <span className='gradient-text'>ethereum.</span></p>
 				<div className='m-3'>
 				<Link href="/newPage">

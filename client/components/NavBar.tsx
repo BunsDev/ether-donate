@@ -14,7 +14,7 @@ const NavBar = () => {
 				<Link href="/explore"><p className='m-auto px-3 font-bold hover:cursor-pointer hover:text-shadow-md transition-all'>Explore</p></Link>
 				<Link href="/about"><p className='m-auto px-3 font-bold hover:cursor-pointer hover:text-shadow-md transition-all'>About</p></Link>
 			</div>
-			<div className='flex px-10 py-5'>
+			<div className='flex px-10 py-5 overflow-hidden'>
 				<button className='px-5 gradient-button' onClick={transactionContext?.connectWallet}>{transactionContext?.currentAccount || 'Login'}</button>
 			</div>
 		</div>
