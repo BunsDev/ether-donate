@@ -18,3 +18,15 @@
 .gradient-img-frame {
 	@apply rounded-full w-28 h-28 bg-gradient-to-r from-[#CD113B] to-[#52006A];
 }
+
+.description a {
+	@apply font-bold underline text-[#CD113B]
+}
+
+.description ol {
+	list-style: decimal;
+}
+
+.description ul {
+	list-style-type: disc;
+}

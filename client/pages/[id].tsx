@@ -1,15 +1,27 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import NavBar from '../components/NavBar'
-import * as IPFS from 'ipfs-core';
+import { useRouter } from 'next/router';
 
 const Page = () => {
+	const router = useRouter();
+	const [title, setTitle] = useState<string>();
+	const [description, setDescription] = useState<string>("");
+	
+	useEffect(() => {
+		const { id } = router.query;
+		fetch(`https://ipfs.io/ipfs/${id}`).then(res => res.json().then(data => {
+			setTitle(data.title);
+			setDescription(data.description);
+		}))
+	}, [])
+
 	return (
 		<>
 			<NavBar />
 			<div className='flex m-5'>
 				<div className='shadow-2xl flex-[0.7] m-10 rounded-lg'>
-					<h1 className='gradient-text text-7xl p-5'>TITLE</h1>
-					<p className='p-5'>Lorem ipsum dolor sit Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eligendi corporis adipisci ab dolore animi. Repudiandae quis quisquam quod delectus pariatur mollitia ipsa esse illo excepturi architecto tenetur ratione, asperiores in. Lorem ipsum dolor, sit amet consectetur adipisicing elit. Porro repudiandae inventore iure vel? Quod cumque veritatis numquam obcaecati voluptas, facilis at commodi! Non enim deleniti minus ea, corporis fugit nulla! Lorem ipsum dolor sit, amet consectetur adipisicing elit. Optio, explicabo suscipit. Tenetur ipsam corrupti dolores magnam. Quam enim error assumenda soluta sint dolores. Delectus, velit obcaecati consequatur natus deserunt quaerat! Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur, dicta tempore. Iusto sequi dolorum deserunt, alias vero consectetur accusamus, exercitationem consequuntur, beatae dolor quam eius eaque fugit a distinctio quibusdam. Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus ut quia eveniet fugit autem libero, nisi ducimus voluptates delectus expedita quod neque quidem ipsa inventore perspiciatis laborum ullam incidunt at? amet consectetur adipisicing elit. Officia quidem consequatur necessitatibus? Necessitatibus culpa fugit, cupiditate in sapiente quidem quae neque doloribus reprehenderit, mollitia vero magnam enim odio! Tempore, inventore. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Doloremque exercitationem, provident natus laborum commodi a ut inventore vero voluptates nemo pariatur soluta perferendis quidem dolore mollitia. Eos nobis dicta doloribus! Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat totam, esse quidem veniam voluptatem temporibus repellat quibusdam obcaecati a corrupti excepturi pariatur non beatae animi mollitia maxime eos magnam amet!</p>
+					<h1 className='gradient-text text-7xl p-5'>{title?.toUpperCase()}</h1>
+					<p className='p-5 description' dangerouslySetInnerHTML={{__html: description}}></p>
 				</div>
 				<div className='bg-[#0D0D0D] h-fit flex flex-col m-10 p-4 rounded-lg flex-[0.3]'>
 					<div className="rounded-lg m-1 p-0.5 bg-gradient-to-r my-2 from-[#CD113B] to-[#52006A]">

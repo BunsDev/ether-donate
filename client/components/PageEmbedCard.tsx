@@ -5,7 +5,7 @@ import Link from 'next/link'
 
 const PageEmbedCard = ({title, donators, id}: {title: string, donators: number, id: string}) => {
 	return (
-		<Link href={id}>		
+		<Link href={id}>
 			<div className='shadow-2xl flex flex-col w-fit text-center p-5 rounded-lg transition-all hover:scale-110 hover:cursor-pointer'>
 				<div className='gradient-img-frame m-auto'>
 					<Image src={Logo} />
