@@ -1,19 +1,47 @@
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
 
-describe("Greeter", function () {
-  it("Should return the new greeting once it's changed", async function () {
-    const Greeter = await ethers.getContractFactory("Greeter");
-    const greeter = await Greeter.deploy("Hello, world!");
-    await greeter.deployed();
+describe("Transaction", function () {
+  let Transaction;
+  let transaction;
+  let addr;
+  let receiver;
 
-    expect(await greeter.greet()).to.equal("Hello, world!");
+  beforeEach(async function () {
+    // deploy the contract and get the test addresses
+    Transaction = await ethers.getContractFactory("Transaction");
+    [addr, receiver] = await ethers.getSigners();
+    transaction = await Transaction.deploy();
+  })
 
-    const setGreetingTx = await greeter.setGreeting("Hola, mundo!");
+  describe("Deployment", function () {
+    it("Should have an empty array of pages", async function () {
+      expect(await transaction.getPageHash()).to.eql([]);
+    })
 
-    // wait until the transaction is mined
-    await setGreetingTx.wait();
+    it ("Should have an empty array of transactions", async function () {
+      expect(await transaction.getTenLatestTransactions()).to.eql([]);
+    })
+  })
 
-    expect(await greeter.greet()).to.equal("Hola, mundo!");
-  });
+  describe("Transactions", function () {
+    it("Should add a new page", async function () {
+      const addPageTx = await transaction.addPage("hello", addr.address);
+      await addPageTx.wait();
+  
+      expect(await transaction.getPageHash()).to.eql([`hello - ${addr.address}`]);
+    });
+  
+    it("Should send a transaction", async function () {
+      const sendTransactionTx = await transaction.sendTransaction(receiver.address, 1, "hello world");
+      await sendTransactionTx.wait();
+      
+      let transactions = await transaction.getTenLatestTransactions()
+      
+      expect(transactions.length).to.equal(1);
+      expect(transactions[0][0]).to.equal(addr.address);
+      expect(transactions[0][1]).to.equal(receiver.address);
+      expect(transactions[0][4]).to.equal("hello world");
+    })
+  })
 });

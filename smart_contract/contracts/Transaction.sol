@@ -10,7 +10,7 @@ contract Transaction {
         string message;
     }
 
-    mapping (string => string) pages;
+    string[] pages;
     mapping (address => TransactionStruct[]) transactionsByAddress;
     TransactionStruct[] transactions;
     TransactionStruct[] tenLatestTransactions;
@@ -18,11 +18,11 @@ contract Transaction {
     event TransactionEvent(address sender, address receiver, uint amount, uint256 timestamp, string message);
 
     function addPage(string memory title, string memory pageHash) public {
-        pages[title] = pageHash;
+        pages.push(string(bytes.concat(bytes(title), " - ", bytes(pageHash))));
     }
 
-    function getPageHash(string memory title) public view returns(string memory) {
-        return pages[title];
+    function getPageHash() public view returns(string[] memory) {
+        return pages;
     }
 
     function sendTransaction(address receiver, uint amount, string memory message) public {
