@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import ethers from 'ethers';
+import { ethers } from 'ethers';
 import { transactionAbi, transactionAddress } from '../lib/constants';
 
 interface TransactionContextInterface {
 	currentAccount: any,
 	connectWallet: any,
-	makeTransaction: any
+	makeTransaction: any,
+	createPage: any,
+	pages: Array<string> | undefined
 }
 
 export const TransactionContext = React.createContext<TransactionContextInterface | null>(null);
@@ -22,6 +24,7 @@ const getTransactionContract = () => {
 
 const TransactionProvider = ({ children }: any) => {
 	const [currentAccount, setCurrentAccount] = useState();
+	const [pages, setPages] = useState();
 
 	const connectWallet = async () => {
 		const accounts = await ethereum.request({method: 'eth_requestAccounts'});
@@ -31,7 +34,14 @@ const TransactionProvider = ({ children }: any) => {
 	const createPage = async (title: string, pageHash: string) => {
 		const transactionContract = getTransactionContract();
 		const transactionHash = await transactionContract.addPage(title, pageHash);
-		await transactionContract.wait();
+		await transactionHash.wait();
+	}
+
+	const getAllPages = () => {
+		const transactionContract = getTransactionContract();
+		transactionContract.getPageHash().then((pgs: any) => {
+			setPages(pgs);
+		});
 	}
 
 	const makeTransaction = async (receiver: string, amount: string, message: string) => {
@@ -55,6 +65,7 @@ const TransactionProvider = ({ children }: any) => {
 			const accounts = await ethereum.request({method: 'eth_accounts'});
 			if (accounts.length) setCurrentAccount(accounts[0]);
 		}
+		getAllPages();
 		checkAccount();
 	}, [])
 
@@ -62,7 +73,9 @@ const TransactionProvider = ({ children }: any) => {
 		<TransactionContext.Provider value={{
 			currentAccount,
 			connectWallet,
-			makeTransaction
+			makeTransaction,
+			createPage,
+			pages
 		}}>
 			{children}
 		</TransactionContext.Provider>
