@@ -17,7 +17,8 @@ const NewPage = () => {
 
 		// store the title and description in ipfs
 		const ipfs = await IPFS.create();
-		const { cid } = await ipfs.add(JSON.stringify({title, description}));
+		const currentAccount = transactionContext?.currentAccount;
+		const { cid } = await ipfs.add(JSON.stringify({title, description, receiver: currentAccount}));
 		const hash = Array.from(cid['_baseCache'].values())[0];
 		
 		// store the hash in the smart contract
