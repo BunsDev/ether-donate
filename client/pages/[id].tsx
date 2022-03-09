@@ -11,7 +11,7 @@ const Page = () => {
 		const { id } = router.query;
 		fetch(`https://ipfs.io/ipfs/${id}`).then(res => res.json().then(data => {
 			setTitle(data.title);
-			setDescription(data.description);
+			setDescription(data.description.replace("<p>", "<pre>"));
 		}))
 	}, [])
 
