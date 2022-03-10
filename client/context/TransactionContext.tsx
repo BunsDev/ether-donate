@@ -7,7 +7,7 @@ interface TransactionContextInterface {
 	connectWallet: any,
 	makeTransaction: any,
 	createPage: any,
-	pages: Array<string> | undefined
+	pages: any
 }
 
 export const TransactionContext = React.createContext<TransactionContextInterface | null>(null);
@@ -39,12 +39,12 @@ const TransactionProvider = ({ children }: any) => {
 
 	const getAllPages = () => {
 		const transactionContract = getTransactionContract();
-		transactionContract.getPageHash().then((pgs: any) => {
+		transactionContract.getPages().then((pgs: any) => {
 			setPages(pgs);
 		});
 	}
 
-	const makeTransaction = async (receiver: string, amount: string, message: string) => {
+	const makeTransaction = async (receiver: string, amount: string, message: string, pageHash: string) => {
 		await ethereum.request({
 			method: 'eth_sendTransaction',
 			params: [{
@@ -56,7 +56,7 @@ const TransactionProvider = ({ children }: any) => {
 		});
 
 		const transactionContract = getTransactionContract();
-		const transactionHash = await transactionContract.sendTransaction(receiver, amount, message);
+		const transactionHash = await transactionContract.sendTransaction(receiver, amount, message, pageHash);
 		await transactionHash.wait();
 	}
 

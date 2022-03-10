@@ -22,6 +22,11 @@ const Page = () => {
 		}))
 	}, [])
 
+	const sendTransaction = () => {
+		const { id } = router.query;
+		transactionContext?.makeTransaction(receiver, amount, message, id);
+	}
+
 	return (
 		<>
 			<NavBar />
@@ -37,7 +42,7 @@ const Page = () => {
 					<div className="rounded-lg m-1 p-0.5 bg-gradient-to-r my-2 from-[#CD113B] to-[#52006A]">
 						<textarea placeholder='Message' onChange={e => setMessage(e.target.value)} className="flex w-full h-40 flex-col outline-none justify-between bg-[#0D0D0D] text-white rounded-lg p-2" />
 					</div>
-					<button className='py-2 gradient-button my-2' onClick={() => transactionContext?.makeTransaction(receiver, amount, message)}>Donate</button>
+					<button className='py-2 gradient-button my-2' onClick={sendTransaction}>Donate</button>
 				</div>
 			</div>
 		</>

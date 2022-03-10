@@ -2,6 +2,7 @@
 pragma solidity ^0.8.0;
 
 contract Transaction {
+    ////// STRUCTS //////
     struct TransactionStruct {
         address sender;
         address receiver;
@@ -9,33 +10,45 @@ contract Transaction {
         uint256 timestamp;
         string message;
     }
+    struct PageStruct {
+        string title;
+        string pageHash;
+        uint numOfDonations;
+    }
 
-    string[] pages;
-    mapping (address => TransactionStruct[]) transactionsByAddress;
+    ////// VARIABLES //////
+    PageStruct[] pages;
     TransactionStruct[] transactions;
     TransactionStruct[] tenLatestTransactions;
 
+    ////// EVENTS //////
     event TransactionEvent(address sender, address receiver, uint amount, uint256 timestamp, string message);
 
+    ////// FUNCTIONS //////
     function addPage(string memory title, string memory pageHash) public {
-        pages.push(string(bytes.concat(bytes(title), " - ", bytes(pageHash))));
+        pages.push(PageStruct({
+            title: title,
+            pageHash: pageHash,
+            numOfDonations: 0
+        }));
     }
 
-    function getPageHash() public view returns(string[] memory) {
+    function getPages() public view returns(PageStruct[] memory) {
         return pages;
     }
 
-    function sendTransaction(address receiver, uint amount, string memory message) public {
+    function sendTransaction(address receiver, uint amount, string memory message, string memory pageHash) public {
         TransactionStruct memory newTransaction = TransactionStruct(msg.sender, receiver, amount, block.timestamp, message);
         transactions.push(newTransaction);
-        transactionsByAddress[receiver].push(newTransaction);
         tenLatestTransactions.push(newTransaction);
+        for (uint i = 0; i < pages.length; i++) {
+            if (keccak256(abi.encodePacked(pages[i].pageHash)) == keccak256(abi.encodePacked(pageHash))) {
+                pages[i].numOfDonations++;
+                break;
+            }
+        }
         if (tenLatestTransactions.length > 10) delete tenLatestTransactions[0];
         emit TransactionEvent(msg.sender, receiver, amount, block.timestamp, message);
-    }
-
-    function getTransactionsByAddress(address receiver) public view returns(TransactionStruct[] memory) {
-        return transactionsByAddress[receiver];
     }
 
     function getTenLatestTransactions() public view returns(TransactionStruct[] memory) {
