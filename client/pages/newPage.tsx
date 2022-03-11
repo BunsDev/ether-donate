@@ -3,7 +3,6 @@ import NavBar from '../components/NavBar'
 import dynamic from 'next/dynamic';
 const ReactQuill = dynamic(() => import('react-quill'), {ssr: false});
 import 'react-quill/dist/quill.snow.css'
-import * as IPFS from 'ipfs-core';
 import { TransactionContext } from '../context/TransactionContext';
 
 const NewPage = () => {
@@ -15,14 +14,9 @@ const NewPage = () => {
 	const launchPage = async () => {
 		setIsLoading(true);
 
-		// store the title and description in ipfs
-		const ipfs = await IPFS.create();
-		const currentAccount = transactionContext?.currentAccount;
-		const { cid } = await ipfs.add(JSON.stringify({title, description, receiver: currentAccount}));
-		const hash = Array.from(cid['_baseCache'].values())[0];
-		
-		// store the hash in the smart contract
-		transactionContext?.createPage(title, hash).then(() => location.href = "/");
+		// store the page on sanity
+
+		// emit an event on the smart contract
 	}
 
 	return (

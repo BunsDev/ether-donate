@@ -3,7 +3,7 @@ import React from 'react'
 import Logo from '../public/Ether Donate Logo.svg';
 
 const RecentDonationCard = () => {
-  return (
+	return (
 		<div className='md:p-5 mx-10 my-5 shadow-2xl rounded-lg'>
 			<div className='flex justify-center my-5'>
 				<div className='gradient-img-frame'>
@@ -20,7 +20,7 @@ const RecentDonationCard = () => {
 				<h1>Message: Hello World!</h1>
 			</div>
 		</div>
-  )
+	)
 }
 
 export default RecentDonationCard

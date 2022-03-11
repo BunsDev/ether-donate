@@ -2,7 +2,7 @@ import React from 'react'
 import RecentDonationCard from './RecentDonationCard'
 
 const RecentDonations = () => {
-  return (
+	return (
 		<>
 			<h1 className='font-extrabold md:text-4xl text-shadow-xl m-10'>RECENT DONATIONS</h1>
 			<div className='grid md:grid-cols-2'>
@@ -13,7 +13,7 @@ const RecentDonations = () => {
 				<RecentDonationCard />
 			</div>
 		</>
-  )
+	)
 }
 
 export default RecentDonations

@@ -7,7 +7,6 @@ const Explore = () => {
 	const transactionContext = useContext(TransactionContext);
 	const [pages, setPages] = useState<any>();
 
-	useEffect(() => setPages(transactionContext?.pages))
 
 	return (
 		<>

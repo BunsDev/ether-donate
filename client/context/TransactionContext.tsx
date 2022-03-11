@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { ethers } from 'ethers';
 import { transactionAbi, transactionAddress } from '../lib/constants';
+import { client } from '../lib/sanityClient';
 
 interface TransactionContextInterface {
 	currentAccount: any,
 	connectWallet: any,
-	makeTransaction: any,
-	createPage: any,
-	pages: any
+	makeTransaction: any
 }
 
 export const TransactionContext = React.createContext<TransactionContextInterface | null>(null);
@@ -24,24 +23,10 @@ const getTransactionContract = () => {
 
 const TransactionProvider = ({ children }: any) => {
 	const [currentAccount, setCurrentAccount] = useState();
-	const [pages, setPages] = useState();
 
 	const connectWallet = async () => {
 		const accounts = await ethereum.request({method: 'eth_requestAccounts'});
 		setCurrentAccount(accounts[0]);
-	}
-
-	const createPage = async (title: string, pageHash: string) => {
-		const transactionContract = getTransactionContract();
-		const transactionHash = await transactionContract.addPage(title, pageHash);
-		await transactionHash.wait();
-	}
-
-	const getAllPages = () => {
-		const transactionContract = getTransactionContract();
-		transactionContract.getPages().then((pgs: any) => {
-			setPages(pgs);
-		});
 	}
 
 	const makeTransaction = async (receiver: string, amount: string, message: string, pageHash: string) => {
@@ -58,6 +43,20 @@ const TransactionProvider = ({ children }: any) => {
 		const transactionContract = getTransactionContract();
 		const transactionHash = await transactionContract.sendTransaction(receiver, amount, message, pageHash);
 		await transactionHash.wait();
+
+		// add the transaction to the database
+		const transactionDoc = {
+			_type: 'transactions',
+			_id: transactionHash,
+			sender: currentAccount,
+			receiver: receiver,
+			amount: parseFloat(amount),
+			message: message,
+			timestamp: new Date(Date.now()).toISOString(),
+			transactionHash: transactionHash
+		}
+
+		await client.createIfNotExists(transactionDoc);
 	}
 
 	useEffect(() => {
@@ -65,7 +64,6 @@ const TransactionProvider = ({ children }: any) => {
 			const accounts = await ethereum.request({method: 'eth_accounts'});
 			if (accounts.length) setCurrentAccount(accounts[0]);
 		}
-		getAllPages();
 		checkAccount();
 	}, [])
 
@@ -73,9 +71,7 @@ const TransactionProvider = ({ children }: any) => {
 		<TransactionContext.Provider value={{
 			currentAccount,
 			connectWallet,
-			makeTransaction,
-			createPage,
-			pages
+			makeTransaction
 		}}>
 			{children}
 		</TransactionContext.Provider>

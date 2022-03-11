@@ -3,7 +3,7 @@ import NavBar from '../components/NavBar'
 
 const About = () => {
   return (
-    <div className='min-h-screen'>
+	<div className='min-h-screen'>
 			<div className='h-screen flex flex-col'>
 				<NavBar />
 				<div className='m-10 flex flex-col h-full justify-center'>
@@ -22,7 +22,7 @@ const About = () => {
 			</div>
 
 		</div>
-  )
+	)
 }
 
 export default About
