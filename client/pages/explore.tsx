@@ -1,24 +1,22 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import NavBar from '../components/NavBar'
 import PageEmbedCard from '../components/PageEmbedCard'
-import { TransactionContext } from '../context/TransactionContext'
 import { client } from '../lib/sanityClient'
 
 const Explore = () => {
-	const transactionContext = useContext(TransactionContext);
+	////// VARIABLES //////
 	const [pages, setPages] = useState<any>();
 
+	////// USE EFFECTS //////
 	useEffect(() => {
+		// fetch all pages
 		;(async () => {
-			const query = `
+			const clientRes = await client.fetch(`
 				*[_type=="pages"] {
 					_id, title, donationsLength
-				}
-			`
-			
-			const clientRes = await client.fetch(query);
-			console.log(clientRes)
-			setPages(clientRes)
+				}			
+			`);
+			setPages(clientRes);
 		})()
 	})
 

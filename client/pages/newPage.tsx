@@ -6,14 +6,15 @@ import 'react-quill/dist/quill.snow.css'
 import { TransactionContext } from '../context/TransactionContext';
 
 const NewPage = () => {
+	////// VARIABLES //////
 	const [title, setTitle] = useState("");
 	const [content, setContent] = useState('');
 	const transactionContext = useContext(TransactionContext);
 	const [isLoading, setIsLoading] = useState(false);
 
+	////// FUNCTIONS //////
 	const launchPage = async () => {
 		setIsLoading(true);
-
 		await transactionContext?.createPage(title, content);
 	}
 

@@ -5,6 +5,7 @@ import { TransactionContext } from '../context/TransactionContext';
 import { client } from '../lib/sanityClient';
 
 const Page = () => {
+	////// VARIABLES //////
 	const router = useRouter();
 	const [title, setTitle] = useState<string>();
 	const [content, setContent] = useState<string>("");
@@ -12,27 +13,24 @@ const Page = () => {
 	const [amount, setAmount] = useState("");
 	const [message, setMessage] = useState("");
 
+	////// CONTEXTS //////
 	const transactionContext = useContext(TransactionContext);
 
+	////// USE EFFECTS //////
 	useEffect(() => {
+		// fetch the title, content, author, and donations of the page from the database
 		;(async () => {
 			const { id } = router.query;
-			const query = `			
+			const clientRes = await client.fetch(`			
 				*[_type == "pages" && _id == "${id}"] {
 					title, content, author, donations
 				}
-			`
-			const clientRes = await client.fetch(query);
+			`);
 			setTitle(clientRes[0]?.title);
 			setContent(clientRes[0]?.content);
 			setReceiver(clientRes[0]?.author);
 		})()
 	})
-
-	const sendTransaction = () => {
-		const { id } = router.query;
-		transactionContext?.makeTransaction(receiver, amount, message, id);
-	}
 
 	return (
 		<>
@@ -49,7 +47,7 @@ const Page = () => {
 					<div className="rounded-lg m-1 p-0.5 bg-gradient-to-r my-2 from-[#CD113B] to-[#52006A]">
 						<textarea placeholder='Message' onChange={e => setMessage(e.target.value)} className="flex w-full h-40 flex-col outline-none justify-between bg-[#0D0D0D] text-white rounded-lg p-2" />
 					</div>
-					<button className='py-2 gradient-button my-2' onClick={sendTransaction}>Donate</button>
+					<button className='py-2 gradient-button my-2' onClick={() => transactionContext?.makeTransaction(receiver, amount, message, router.query.id)}>Donate</button>
 				</div>
 			</div>
 		</>
