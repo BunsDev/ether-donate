@@ -6,7 +6,8 @@ import { client } from '../lib/sanityClient';
 interface TransactionContextInterface {
 	currentAccount: any,
 	connectWallet: any,
-	makeTransaction: any
+	makeTransaction: any,
+	createPage: any
 }
 
 export const TransactionContext = React.createContext<TransactionContextInterface | null>(null);
@@ -36,13 +37,16 @@ const TransactionProvider = ({ children }: any) => {
 
 		const pageDoc = {
 			_type: "pages",
-			_id: transactionHash,
+			_id: transactionHash.hash,
 			title: title,
 			content: content,
+			author: currentAccount,
 			donations: []
 		}
 
 		await client.createIfNotExists(pageDoc);
+
+		location.href = "/";
 	}
 
 	const makeTransaction = async (receiver: string, amount: string, message: string, pageHash: string) => {
@@ -52,7 +56,7 @@ const TransactionProvider = ({ children }: any) => {
 				from: currentAccount,
 				to: receiver,
 				gas: "0x5208",
-				value: ethers.utils.parseEther(amount)._hex
+				value: ethers.utils.parseEther(amount)._hex.toString()
 			}]
 		});
 
@@ -63,7 +67,7 @@ const TransactionProvider = ({ children }: any) => {
 		// add the transaction to the database
 		const transactionDoc = {
 			_type: 'transactions',
-			_id: transactionHash,
+			_id: transactionHash.hash,
 			sender: currentAccount,
 			receiver: receiver,
 			amount: parseFloat(amount),
@@ -72,6 +76,14 @@ const TransactionProvider = ({ children }: any) => {
 		}
 
 		await client.createIfNotExists(transactionDoc);
+
+		await client.patch(pageHash).setIfMissing({ donations: [] }).insert('after', 'donations[-1]', [
+			{
+				_key: transactionHash.hash,
+				_ref: transactionHash.hash,
+				_type: 'reference'
+			}
+		]).commit();
 	}
 
 	useEffect(() => {
@@ -86,7 +98,8 @@ const TransactionProvider = ({ children }: any) => {
 		<TransactionContext.Provider value={{
 			currentAccount,
 			connectWallet,
-			makeTransaction
+			makeTransaction,
+			createPage
 		}}>
 			{children}
 		</TransactionContext.Provider>
