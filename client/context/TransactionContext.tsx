@@ -41,6 +41,7 @@ const TransactionProvider = ({ children }: any) => {
 			title: title,
 			content: content,
 			author: currentAccount,
+			donationsLength: 0,
 			donations: []
 		}
 

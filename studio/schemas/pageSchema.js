@@ -19,6 +19,11 @@ export const pageSchema = {
 			type: "string"
 		},
 		{
+			name: 'donationsLength',
+			title: 'donationsLength',
+			type: 'number'
+		},
+		{
 			name: "donations",
 			title: "donations",
 			type: "array",

@@ -2,11 +2,12 @@ import React, { useContext, useEffect, useState } from 'react'
 import NavBar from '../components/NavBar'
 import { useRouter } from 'next/router';
 import { TransactionContext } from '../context/TransactionContext';
+import { client } from '../lib/sanityClient';
 
 const Page = () => {
 	const router = useRouter();
 	const [title, setTitle] = useState<string>();
-	const [description, setDescription] = useState<string>("");
+	const [content, setContent] = useState<string>("");
 	const [receiver, setReceiver] = useState("");
 	const [amount, setAmount] = useState("");
 	const [message, setMessage] = useState("");
@@ -14,13 +15,19 @@ const Page = () => {
 	const transactionContext = useContext(TransactionContext);
 
 	useEffect(() => {
-		const { id } = router.query;
-		fetch(`https://ipfs.io/ipfs/${id}`).then(res => res.json().then(data => {
-			setTitle(data.title);
-			setDescription(data.description.replace("<p>", "<pre>"));
-			setReceiver(data.receiver);
-		}))
-	}, [])
+		;(async () => {
+			const { id } = router.query;
+			const query = `			
+				*[_type == "pages" && _id == "${id}"] {
+					title, content, author, donations
+				}
+			`
+			const clientRes = await client.fetch(query);
+			setTitle(clientRes[0]?.title);
+			setContent(clientRes[0]?.content);
+			setReceiver(clientRes[0]?.author);
+		})()
+	})
 
 	const sendTransaction = () => {
 		const { id } = router.query;
@@ -30,10 +37,10 @@ const Page = () => {
 	return (
 		<>
 			<NavBar />
-			<div className='flex m-5 lg:flex-row flex-col-reverse'>
+			<div className='flex m-5 lg:flex-row flex-col'>
 				<div className='shadow-2xl flex-[0.7] m-10 rounded-lg'>
 					<h1 className='gradient-text text-7xl p-5'>{title?.toUpperCase()}</h1>
-					<p className='p-5 description' dangerouslySetInnerHTML={{__html: description}}></p>
+					<p className='p-5 content' dangerouslySetInnerHTML={{__html: content}}></p>
 				</div>
 				<div className='bg-[#0D0D0D] h-fit flex flex-col m-10 p-4 rounded-lg flex-[0.3]'>
 					<div className="rounded-lg m-1 p-0.5 bg-gradient-to-r my-2 from-[#CD113B] to-[#52006A]">
