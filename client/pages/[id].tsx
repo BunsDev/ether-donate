@@ -30,7 +30,7 @@ const Page = () => {
 	return (
 		<>
 			<NavBar />
-			<div className='flex m-5'>
+			<div className='flex m-5 lg:flex-row flex-col-reverse'>
 				<div className='shadow-2xl flex-[0.7] m-10 rounded-lg'>
 					<h1 className='gradient-text text-7xl p-5'>{title?.toUpperCase()}</h1>
 					<p className='p-5 description' dangerouslySetInnerHTML={{__html: description}}></p>

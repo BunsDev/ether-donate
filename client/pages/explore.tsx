@@ -14,6 +14,17 @@ const Explore = () => {
 			<div className='m-10'>
 				<h1 className='font-extrabold text-4xl text-shadow-xl mb-5'>Explore</h1>
 				<div className='grid grid-cols-3'>
+					<PageEmbedCard title="hello" donators={0} id="1" />
+					<PageEmbedCard title="hello" donators={0} id="1" />
+					<PageEmbedCard title="hello" donators={0} id="1" />
+					<PageEmbedCard title="hello" donators={0} id="1" />
+					<PageEmbedCard title="hello" donators={0} id="1" />
+					<PageEmbedCard title="hello" donators={0} id="1" />
+					<PageEmbedCard title="hello" donators={0} id="1" />
+					<PageEmbedCard title="hello" donators={0} id="1" />
+					<PageEmbedCard title="hello" donators={0} id="1" />
+					<PageEmbedCard title="hello" donators={0} id="1" />
+					<PageEmbedCard title="hello" donators={0} id="1" />
 					{pages ? pages.map((page: any) => {
 						return (<PageEmbedCard title={page[0]} donators={parseInt(page[2]._hex, 16)} id={page[1]} />)
 					}) : null}

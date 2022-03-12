@@ -29,6 +29,22 @@ const TransactionProvider = ({ children }: any) => {
 		setCurrentAccount(accounts[0]);
 	}
 
+	const createPage = async (title: string, content: string) => {
+		const transactionContract = getTransactionContract();
+		const transactionHash = await transactionContract.createPage(title, content);
+		await transactionHash.wait();
+
+		const pageDoc = {
+			_type: "pages",
+			_id: transactionHash,
+			title: title,
+			content: content,
+			donations: []
+		}
+
+		await client.createIfNotExists(pageDoc);
+	}
+
 	const makeTransaction = async (receiver: string, amount: string, message: string, pageHash: string) => {
 		await ethereum.request({
 			method: 'eth_sendTransaction',
@@ -52,8 +68,7 @@ const TransactionProvider = ({ children }: any) => {
 			receiver: receiver,
 			amount: parseFloat(amount),
 			message: message,
-			timestamp: new Date(Date.now()).toISOString(),
-			transactionHash: transactionHash
+			timestamp: new Date(Date.now()).toISOString()
 		}
 
 		await client.createIfNotExists(transactionDoc);
