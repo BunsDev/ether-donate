@@ -22,17 +22,6 @@ export const pageSchema = {
 			name: 'donationsLength',
 			title: 'donationsLength',
 			type: 'number'
-		},
-		{
-			name: "donations",
-			title: "donations",
-			type: "array",
-			of: [
-				{
-					type: "reference",
-					to: [{type: "transactions"}]
-				}
-			]
 		}
 	]
 }

@@ -54,7 +54,7 @@ const TransactionProvider = ({ children }: any) => {
 	}
 
 	// called when the user made a donation
-	const makeTransaction = async (receiver: string, amount: string, message: string, pageHash: string) => {
+	const makeTransaction = async (receiver: string, amount: string, message: string, pageHash: string, donationsLength: number) => {
 		// make the transaction
 		await ethereum.request({
 			method: 'eth_sendTransaction',
@@ -68,7 +68,7 @@ const TransactionProvider = ({ children }: any) => {
 
 		// emit an event from the smart contract
 		const transactionContract = getTransactionContract();
-		const transactionHash = await transactionContract.sendTransaction(receiver, amount, message, pageHash);
+		const transactionHash = await transactionContract.sendTransaction(receiver, amount, message);
 		await transactionHash.wait();
 
 		// add the transaction to the database
@@ -83,14 +83,7 @@ const TransactionProvider = ({ children }: any) => {
 		}
 		await client.createIfNotExists(transactionDoc);
 
-		// add a new donation to the page
-		await client.patch(pageHash).setIfMissing({ donations: [] }).insert('after', 'donations[-1]', [
-			{
-				_key: transactionHash.hash,
-				_ref: transactionHash.hash,
-				_type: 'reference'
-			}
-		]).commit();
+		await client.patch(pageHash).set({ donationsLength: donationsLength + 1 }).commit();
 
 		// redirect the user to the homepage when the transaction is finished
 		location.href = "/";
