@@ -3,10 +3,13 @@ import { client } from '../lib/sanityClient'
 import RecentDonationCard from './RecentDonationCard'
 
 const RecentDonations = () => {
+	////// VARIABLES //////
 	const [donations, setDonations] = useState<any>();
 
+	////// USE EFFECTS //////
 	useEffect(() => {
 		;(async () => {
+			// fetch the first 10 transactions
 			const clientRes = await client.fetch(`
 				*[_type == "transactions"][0...10]
 			`)

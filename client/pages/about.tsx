@@ -11,7 +11,7 @@ const About = () => {
 					<br />
 					<p>Ether Donate is an Ethereum donation website. You can use this website for anything, like <span className='gradient-text'>startups, fundraisers, donations.</span></p>
 					<br />
-					<p>This website is decentralized; the <span className='gradient-text'>Ethereum Blockchain</span> powers it. This website will store all of its data in <span className='gradient-text'>IPFS.</span></p>
+					<p>This website is decentralized; the <span className='gradient-text'>Ethereum Blockchain</span> powers it.</p>
 					<br />
 					<p>This website is open source too! Check it out on <a href="https://github.com/Zeno3463/ether-donate" className='gradient-text border-b-2 border-[#CD113B]'>Github</a> (plz star it ^_^)!</p>
 					<br />

@@ -10,7 +10,7 @@ const Page = () => {
 	const [title, setTitle] = useState<string>();
 	const [content, setContent] = useState<string>("");
 	const [receiver, setReceiver] = useState("");
-	const [amount, setAmount] = useState("");
+	const [amount, setAmount] = useState<number>();
 	const [message, setMessage] = useState("");
 	const [donations, setDonations] = useState<any>();
 	const [donationsLength, setDonationsLength] = useState();
@@ -35,12 +35,10 @@ const Page = () => {
 
 			const donationRes = await client.fetch(`
 				*[_type == "transactions" && receiver == "${clientRes[0]?.author}"] {
-					sender, amount, message, timestamp
+					sender, amount, message, timestamp, _id
 				}
 			`)
 			setDonations(donationRes);
-
-			console.log(donationRes);
 		})()
 	})
 
@@ -54,21 +52,26 @@ const Page = () => {
 				</div>
 				<div className='bg-[#0D0D0D] h-fit flex flex-col m-10 p-4 rounded-lg flex-[0.3]'>
 					<div className="rounded-lg m-1 p-0.5 bg-gradient-to-r my-2 from-[#CD113B] to-[#52006A]">
-						<input type="number" onChange={e => setAmount(e.target.value)} placeholder='Amount' min={0} className="flex w-full flex-col outline-none justify-between bg-[#0D0D0D] text-white rounded-lg p-2" />
+						<input type="number" onChange={e => setAmount(parseInt(e.target.value))} value={amount} placeholder='Amount' min={0} className="flex w-full flex-col outline-none justify-between bg-[#0D0D0D] text-white rounded-lg p-2" />
 					</div>
 					<div className="rounded-lg m-1 p-0.5 bg-gradient-to-r my-2 from-[#CD113B] to-[#52006A]">
 						<textarea placeholder='Message' onChange={e => setMessage(e.target.value)} className="flex w-full h-40 flex-col outline-none justify-between bg-[#0D0D0D] text-white rounded-lg p-2" />
 					</div>
-					<button className='py-2 gradient-button my-2' onClick={() => transactionContext?.makeTransaction(receiver, amount, message, router.query.id, donationsLength)}>Donate</button>
+					<button className='py-2 gradient-button my-2' onClick={() => transactionContext?.makeTransaction(receiver, amount?.toString(), message, router.query.id, donationsLength)}>Donate</button>
 				</div>
 			</div>
 			<div className='m-5'>
-				{donations?.map((donation: any) => <div className='mx-10 rounded-lg shadow-2xl'>
+				{donations?.map((donation: any) => {
+				const link = `https://etherscan.io/tx/${donation._id}`
+
+				return <div className='mx-10 rounded-lg shadow-2xl transition-all hover:scale-110'>
 					<div className='p-5'>
-						<h1><span className='gradient-text'>{donation.sender}</span> donated <span className='gradient-text'>{donation.amount} ETH</span> at <span className='gradient-text'>{donation.timestamp}</span></h1>
-						<h1 className='text-xl font-semibold'>{donation.message}</h1>
+						<a href={link} target="_blank" rel="noopener noreferrer">
+							<h1><span className='gradient-text'>{donation.sender}</span> donated <span className='gradient-text'>{donation.amount} ETH</span> at <span className='gradient-text'>{donation.timestamp}</span></h1>
+							<h1 className='text-xl font-semibold'>{donation.message}</h1>
+						</a>
 					</div>
-				</div>)}
+				</div>})}
 			</div>
 		</>
 	)
