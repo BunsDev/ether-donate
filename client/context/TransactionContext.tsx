@@ -14,6 +14,7 @@ interface TransactionContextInterface {
 ////// CONTEXTS //////
 export const TransactionContext = React.createContext<TransactionContextInterface | null>(null);
 
+declare const window: any;
 let ethereum: any;
 if (typeof window !== 'undefined') ethereum = window.ethereum;
 
