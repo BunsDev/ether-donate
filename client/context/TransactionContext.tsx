@@ -95,7 +95,7 @@ const TransactionProvider = ({ children }: any) => {
 	const getTransactionContract = () => {
 		const provider = new ethers.providers.Web3Provider(ethereum);
 		const signer = provider.getSigner();
-		const contract = new ethers.Contract(transactionAddress, transactionAbi, signer);
+		const contract = new ethers.Contract(transactionAddress!, transactionAbi, signer);
 		return contract;
 	}
 

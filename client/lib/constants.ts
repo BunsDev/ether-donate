@@ -1,4 +1,5 @@
 import abi from './Transaction.json';
 
 export const transactionAbi = abi.abi;
-export const transactionAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+// TX_ADDR
+export const transactionAddress = "0xA706F36B74833Aca821eA4C993c765cB66376A76";

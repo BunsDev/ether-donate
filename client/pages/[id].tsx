@@ -14,6 +14,7 @@ const Page = () => {
 	const [message, setMessage] = useState("");
 	const [donations, setDonations] = useState<any>();
 	const [donationsLength, setDonationsLength] = useState();
+	const [isLoading, setIsLoading] = useState(false);
 
 	////// CONTEXTS //////
 	const transactionContext = useContext(TransactionContext);
@@ -42,6 +43,12 @@ const Page = () => {
 		})()
 	})
 
+	////// FUNCTIONS //////
+	const sendTransaction = () => {
+		setIsLoading(true);
+		transactionContext?.makeTransaction(receiver, amount?.toString(), message, router.query.id, donationsLength)
+	}
+
 	return (
 		<>
 			<NavBar />
@@ -57,12 +64,12 @@ const Page = () => {
 					<div className="rounded-lg m-1 p-0.5 bg-gradient-to-r my-2 from-[#CD113B] to-[#52006A]">
 						<textarea placeholder='Message' onChange={e => setMessage(e.target.value)} className="flex w-full h-40 flex-col outline-none justify-between bg-[#0D0D0D] text-white rounded-lg p-2" />
 					</div>
-					<button className='py-2 gradient-button my-2' onClick={() => transactionContext?.makeTransaction(receiver, amount?.toString(), message, router.query.id, donationsLength)}>Donate</button>
+					<button className='py-2 gradient-button my-2' onClick={() => isLoading ? null : sendTransaction()}>{isLoading ? "Loading..." : "Donate"}</button>
 				</div>
 			</div>
 			<div className='m-5'>
 				{donations?.map((donation: any) => {
-				const link = `https://etherscan.io/tx/${donation._id}`
+				const link = `https://ropsten.etherscan.io/tx/${donation._id}`
 
 				return <div className='mx-10 rounded-lg shadow-2xl transition-all hover:scale-110'>
 					<div className='p-5'>

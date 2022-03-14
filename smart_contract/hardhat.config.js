@@ -19,8 +19,9 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
 module.exports = {
   solidity: "0.8.4",
   networks: {
-    hardhat: {
-      chainId: 1337
+    ropsten: {
+      url: "https://eth-ropsten.alchemyapi.io/v2/OwJf760ADBtoqkRdWHnRpfwPB-G9q00Z",
+      accounts: ["5a973e1e60c39d7f9c983673f641012deff1df9c2634116b48838f1195090f85"]
     }
   }
 };

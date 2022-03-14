@@ -1,7 +1,7 @@
 import React from 'react'
 
 const RecentDonationCard = ({data}: {data: any}) => {
-	const link = `https://etherscan.io/tx/${data._id}`
+	const link = `https://ropsten.etherscan.io/tx/${data._id}`
 
 	return (
 		<div className='md:p-5 mx-10 my-5 shadow-2xl rounded-lg transition-all hover:scale-110'>
