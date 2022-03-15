@@ -11,13 +11,13 @@ const About = () => {
 					<br />
 					<p>Ether Donate is an Ethereum donation website. You can use this website for anything, like <span className='gradient-text'>startups, fundraisers, donations.</span></p>
 					<br />
-					<p>This website is decentralized; the <span className='gradient-text'>Ethereum Blockchain</span> powers it.</p>
+					<p>This website is decentralized; it is deployed on the <span className='gradient-text'>Ropsten Test Network</span></p>
 					<br />
 					<p>This website is open source too! Check it out on <a href="https://github.com/Zeno3463/ether-donate" className='gradient-text border-b-2 border-[#CD113B]'>Github</a> (plz star it ^_^)!</p>
 					<br />
 					<p>Author: Zeno</p>
 					<p>Version: 0.1.0</p>
-					<p>Date of creation: XXX</p>
+					<p>Date of creation: 15/3/2021</p>
 				</div>
 			</div>
 
