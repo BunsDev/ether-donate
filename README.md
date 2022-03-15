@@ -11,7 +11,7 @@
   •
   <a href="#-screenshots">Screenshots</a>
   •
-  <a href="#-technologies">Technologies</a>
+  <a href="#%EF%B8%8F-technologies">Technologies</a>
 </p>
 
 ## ❓ About
