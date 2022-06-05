@@ -15,7 +15,7 @@
 </p>
 
 ## ❓ About
-Ether Donate is a donation website that uses ethereum as its currency. Here's a <a href="https://wordle-with-a-twist.netlify.app/" target="_blank">demo</a> of the website deployed on the ropsten test network.
+Ether Donate is a donation website that uses ethereum as its currency. Here's a <a href="ether-donate.vercel.app/" target="_blank">demo</a> of the website deployed on the ropsten test network.
 - Date of Creation: 15/3/2021
 - Author: Zeno
 - Version: 0.1.0
